@@ -69,4 +69,12 @@
         android:textColor="@color/white"
         android:textSize="18sp"/>
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animationView"
+        android:layout_width="251dp"
+        android:layout_height="wrap_content"
+        app:lottie_autoPlay="false"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/confetti" />
+
 </LinearLayout>

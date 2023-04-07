@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import com.airbnb.lottie.LottieAnimationView
 
 class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -32,6 +33,19 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz_questions)
+
+        mUserName = intent.getStringExtra(Constants.USER_NAME)
+
+        progressBar = findViewById(R.id.progressBar)
+        tvProgress = findViewById(R.id.tv_progress)
+        tvQuestion = findViewById(R.id.tv_question)
+        ivImage = findViewById(R.id.iv_image)
+        tvOptionOne = findViewById(R.id.tv_option_one)
+        tvOptionTwo = findViewById(R.id.tv_option_two)
+        tvOptionThree = findViewById(R.id.tv_option_three)
+        tvOptionFour = findViewById(R.id.tv_option_four)
+        buttonSubmit = findViewById(R.id.btn_submit)
+        mQuestionsList = Constants.getQuestions()
 
         setQuestion()
 
@@ -133,6 +147,8 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
                                 intent.putExtra(Constants.TOTAL_QUESTIONS, mQuestionsList?.size)
                                 startActivity(intent)
                                 finish()
+
+
                             }
                         }
                     } else {
