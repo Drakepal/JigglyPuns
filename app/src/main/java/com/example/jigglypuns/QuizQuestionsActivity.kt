@@ -1,5 +1,6 @@
 package com.example.jigglypuns
 
+import android.content.Intent
 import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -48,6 +49,12 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
             mQuestionsList!![mCurrentPosition -1]
 
         defaultOptionsView()
+
+        if (mCurrentPosition == mQuestionsList!!.size) {
+            buttonSubmit?.text = "FINISH"
+        } else {
+            buttonSubmit?.text = "SUBMIT"
+        }
 
         progressBar?.progress = mCurrentPosition
         tvProgress?.text = "$mCurrentPosition" + "/" + progressBar?.max
@@ -110,8 +117,46 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
                         selectedOptionView(it, 4)
                     }
                 }
+                R.id.btn_submit -> {
+                    if (mSelectedOptionPosition == 0) {
+
+                        mCurrentPosition++
+
+                        when {
+                            mCurrentPosition <= mQuestionsList!!.size -> {
+                                setQuestion()
+                            }
+                            else -> {
+                                val intent = Intent(this@QuizQuestionsActivity, ResultActivity::class.java)
+                                intent.putExtra(Constants.USER_NAME, mUserName)
+                                intent.putExtra(Constants.CORRECT_ANSWERS, mCorrectAnswers)
+                                intent.putExtra(Constants.TOTAL_QUESTIONS, mQuestionsList?.size)
+                                startActivity(intent)
+                                finish()
+                            }
+                        }
+                    } else {
+                        val question = mQuestionsList?.get(mCurrentPosition - 1)
+
+                        if (question!!.correctAnswer != mSelectedOptionPosition) {
+                            answerView(mSelectedOptionPosition, R.drawable.wrong_option_border)
+                        } else {
+                            mCorrectAnswers++
+                        }
+
+                        answerView(question.correctAnswer, R.drawable.correct_option_border)
+
+                        if (mCurrentPosition == mQuestionsList!!.size) {
+                            buttonSubmit?.text = "FINISH"
+                        } else {
+                            buttonSubmit?.text = "GO TO NEXT QUESTION"
+                        }
+
+                        mSelectedOptionPosition = 0
+                    }
+                }
             }
-    }
+        }
 
     private fun selectedOptionView(tv: TextView, selectedOptionNum: Int) {
 
